@@ -40,10 +40,7 @@ public class SaleRestResource {
                     sale.setAmount(newSale.getAmount());
                     return saleRepository.save(sale);
                 })
-                .orElseGet(() -> {
-                    newSale.setId(id);
-                    return saleRepository.save(newSale);
-                });
+                .orElseThrow(() -> new SaleNotFoundException(id));
     }
 
     @DeleteMapping("/sales/{id}")
