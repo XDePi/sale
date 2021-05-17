@@ -28,10 +28,10 @@ public class Sale {
     @NonNull
     private Date date;
 
-    @Column
+    @Column(name = "customer_name")
     @NotBlank
     @NonNull
-    private String customer_name;
+    private String customerName;
 
     @Column
     @NonNull
