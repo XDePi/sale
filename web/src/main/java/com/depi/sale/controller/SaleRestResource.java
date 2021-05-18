@@ -4,9 +4,14 @@ import com.depi.sale.entity.Sale;
 import com.depi.sale.exceptions.SaleNotFoundException;
 import com.depi.sale.repository.SaleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class SaleRestResource {
@@ -15,8 +20,9 @@ public class SaleRestResource {
     SaleRepository saleRepository;
 
     @GetMapping("/sales")
-    List<Sale> all() {
-        return saleRepository.findAll();
+    Page<Sale> findAll(@RequestParam Optional<Integer> page,
+                       @RequestParam Optional<Integer> pageSize) {
+        return saleRepository.findAll(PageRequest.of(page.orElse(0), pageSize.orElse(10), Sort.by("customerName")));
     }
 
     @PostMapping("/sales")
