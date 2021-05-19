@@ -1,7 +1,6 @@
 package com.depi.sale.dto;
 
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;

@@ -3,12 +3,10 @@ package com.depi.sale.entity;
 import lombok.Data;
 import lombok.NonNull;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.util.Date;
 
