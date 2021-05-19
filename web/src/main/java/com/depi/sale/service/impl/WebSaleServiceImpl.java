@@ -1,19 +1,24 @@
 package com.depi.sale.service.impl;
 
-import com.depi.sale.DTO.SaleDTO;
+import com.depi.sale.dto.SaleDTO;
 import com.depi.sale.entity.Sale;
 import com.depi.sale.exceptions.SaleNotFoundException;
 import com.depi.sale.repository.SaleRepository;
-import com.depi.sale.service.SaleService;
+import com.depi.sale.service.WebSaleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Optional;
 
 @Service
-public class SaleServiceImpl implements SaleService {
+public class WebSaleServiceImpl implements WebSaleService {
 
     @Autowired
     ModelMapper modelMapper;
@@ -23,8 +28,10 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     @Transactional
-    public Page<SaleDTO> findAll(Pageable pageable) {
-        Page<Sale> sales = saleRepository.findAll(pageable);
+    public Page<SaleDTO> findAll(Optional<String> sort, Optional<Integer> page, Optional<Integer> pageSize, Pageable pageable) {
+
+        Page<Sale> sales = saleRepository.findAll(
+                PageRequest.of(page.orElse(0), pageSize.orElse(10), Sort.by(sort.orElse("customerName"))));
         return sales.map(this::convertToDto);
     }
 

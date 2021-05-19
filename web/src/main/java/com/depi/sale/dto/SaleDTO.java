@@ -1,7 +1,7 @@
-package com.depi.sale.DTO;
+package com.depi.sale.dto;
 
 
-import com.depi.sale.entity.Sale;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -9,18 +9,20 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Getter
+@Setter
 public class SaleDTO {
 
-    @NonNull @Getter @Setter
+    @NonNull
     private long id;
 
-    @NonNull @Getter @Setter
+    @NonNull
     private Date date;
 
-    @NonNull @Getter @Setter
+    @NonNull
     private String customerName;
 
-    @NonNull @Getter @Setter
+    @NonNull
     private BigDecimal amount;
 
 }
