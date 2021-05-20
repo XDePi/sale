@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.10.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+    <changeSet author="dpekutovskiy" id="1">
+        <createTable tableName="sale">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="sale_pkey"/>
+            </column>
+            <column name="amount" type="numeric(19, 2)"/>
+            <column name="customer_name" type="VARCHAR(255)"/>
+            <column name="date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+        </createTable>
+        <createIndex tableName="sale" indexName="sale_idx_customer_name">
+            <column name="customer_name"/>
+        </createIndex>
+        <createIndex tableName="sale" indexName="sale_idx_date">
+            <column name="date"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

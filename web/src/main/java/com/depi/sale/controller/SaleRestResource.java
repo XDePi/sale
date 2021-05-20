@@ -20,7 +20,9 @@ public class SaleRestResource {
     WebSaleService webSaleService;
 
     @GetMapping("/sales")
-    Page<SaleDTO> findAll(Pageable pageable) {
+    Page<SaleDTO> findAll(@PageableDefault
+                          @SortDefault(sort = "customerName", direction = Sort.Direction.ASC)
+                                  Pageable pageable) {
         return webSaleService.findAll(pageable);
 
     }

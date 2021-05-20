@@ -11,6 +11,5 @@ import javax.validation.constraints.NotNull;
 @Repository
 public interface SaleRepository extends PagingAndSortingRepository<Sale, Long> {
 
-    @NotNull
-    Page<Sale> findAll(Pageable pageable);
+    Page<Sale> findAll(@NotNull Pageable pageable);
 }
