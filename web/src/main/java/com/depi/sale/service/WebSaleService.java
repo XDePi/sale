@@ -11,17 +11,16 @@ import java.util.Optional;
 public interface WebSaleService {
 
     @NotNull
-    Page<SaleDTO> findAll(Optional<String> sort, Optional<Integer> page, Optional<Integer> pageSize, Pageable pageable);
+    Page<SaleDTO> findAll(Pageable pageable);
 
     @NotNull
     SaleDTO newSale(Sale sale);
 
-    @NotNull
+
     SaleDTO getById(Long id);
 
     @NotNull
     SaleDTO replaceSale(Sale sale, Long id);
 
-    @NotNull
     void deleteSale(Long id);
 }

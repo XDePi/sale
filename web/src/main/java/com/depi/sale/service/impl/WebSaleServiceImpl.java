@@ -27,10 +27,9 @@ public class WebSaleServiceImpl implements WebSaleService {
 
     @Override
     @Transactional
-    public Page<SaleDTO> findAll(Optional<String> sort, Optional<Integer> page, Optional<Integer> pageSize, Pageable pageable) {
+    public Page<SaleDTO> findAll(Pageable pageable) {
 
-        Page<Sale> sales = saleRepository.findAll(
-                PageRequest.of(page.orElse(0), pageSize.orElse(10), Sort.by(sort.orElse("customerName"))));
+        Page<Sale> sales = saleRepository.findAll(pageable);
         return sales.map(this::convertToDto);
     }
 

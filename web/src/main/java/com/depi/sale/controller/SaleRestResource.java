@@ -6,6 +6,9 @@ import com.depi.sale.service.WebSaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -17,11 +20,10 @@ public class SaleRestResource {
     WebSaleService webSaleService;
 
     @GetMapping("/sales")
-    Page<SaleDTO> findAll(@RequestParam Optional<Integer> page,
-                          @RequestParam Optional<Integer> pageSize,
-                          @RequestParam Optional<String> sort,
-                          Pageable pageable) {
-        return webSaleService.findAll(sort, page, pageSize, pageable);
+    Page<SaleDTO> findAll(@PageableDefault
+                          @SortDefault(sort = "customerName", direction = Sort.Direction.ASC)
+                                   Pageable pageable) {
+        return webSaleService.findAll(pageable);
 
     }
 
