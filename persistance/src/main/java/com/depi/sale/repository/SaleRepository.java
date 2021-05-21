@@ -13,4 +13,6 @@ import java.util.List;
 public interface SaleRepository extends PagingAndSortingRepository<Sale, Long> {
 
     Page<Sale> findAll(@NotNull Pageable pageable);
+    List<Sale> findAll();
+
 }

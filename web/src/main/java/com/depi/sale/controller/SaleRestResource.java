@@ -61,19 +61,17 @@ public class SaleRestResource {
         return webSaleService.getById(id);
     }
 
+    @ApiOperation(value = "Download instance of the DB", notes = "Export in excel file")
     @GetMapping("/sales/download")
-    public void exportToExcel(HttpServletResponse response,
-                              Pageable pageable) throws IOException {
-        response.setContentType("application/json");
+    public void exportToExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=sales.xlsx";
-
         response.setHeader(headerKey, headerValue);
 
-        Page<Sale> sales = saleRepository.findAll(pageable);
-
-        SaleExcelExporter excelExporter = new SaleExcelExporter(sales);
-        excelExporter.export(response);
+        List<Sale> sales = webSaleService.findAll();
+        SaleExcelExporter saleExcelExporter = new SaleExcelExporter(sales);
+        saleExcelExporter.export(response);
     }
 
     @ApiOperation(value = "Post new sale entity to DB", notes = "Post new sale entity to DB")

@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,6 +32,12 @@ public class WebSaleServiceImpl implements WebSaleService {
 
         Page<Sale> sales = saleRepository.findAll(pageable);
         return sales.map(this::convertToDto);
+    }
+
+    @Override
+    @Transactional
+    public List<Sale> findAll() {
+        return saleRepository.findAll();
     }
 
     @Override
