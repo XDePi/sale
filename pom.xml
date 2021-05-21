@@ -6,6 +6,7 @@
     <modules>
         <module>persistance</module>
         <module>web</module>
+        <module>app</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

@@ -7,6 +7,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Repository
 public interface SaleRepository extends PagingAndSortingRepository<Sale, Long> {
