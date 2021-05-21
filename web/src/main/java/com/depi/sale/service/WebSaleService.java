@@ -16,7 +16,6 @@ public interface WebSaleService {
     @NotNull
     SaleDTO newSale(Sale sale);
 
-
     SaleDTO getById(Long id);
 
     @NotNull
