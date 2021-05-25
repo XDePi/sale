@@ -1,6 +1,7 @@
 package exporter;
 
 import com.depi.sale.entity.Sale;
+import feed.SaleColumnKey;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
@@ -15,6 +16,10 @@ import java.util.Date;
 import java.util.List;
 
 public class SaleExcelExporter {
+    private static final String SHEET_NAME = "Sales";
+    private static final int FONT_HEIGHT = 14;
+    private static final int ROW_NUMBER = 0;
+
     private XSSFWorkbook workbook;
     private XSSFSheet sheet;
     private List<Sale> sales;
@@ -25,14 +30,14 @@ public class SaleExcelExporter {
     }
     
     private void writeHeaderLine() {
-        sheet = workbook.createSheet("Sales");
+        sheet = workbook.createSheet(SHEET_NAME);
 
-        Row row = sheet.createRow(0);
+        Row row = sheet.createRow(ROW_NUMBER);
 
-        createCell(row, 0, "Sale ID");
-        createCell(row, 1, "Date");
-        createCell(row, 2, "Customer name");
-        createCell(row, 3, "Amount");
+        createCell(row, 0, SaleColumnKey.SALE_ID.getName());
+        createCell(row, 1, SaleColumnKey.DATE.getName());
+        createCell(row, 2, SaleColumnKey.CUSTOMER_NAME.getName());
+        createCell(row, 3, SaleColumnKey.AMOUNT.getName());
     }
 
     private void createCell(Row row, int columnCount, Object value) {
@@ -53,7 +58,7 @@ public class SaleExcelExporter {
 
         CellStyle style = workbook.createCellStyle();
         XSSFFont font = workbook.createFont();
-        font.setFontHeight(14);
+        font.setFontHeight(FONT_HEIGHT);
         style.setFont(font);
 
         for (Sale s : sales) {

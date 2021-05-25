@@ -28,8 +28,6 @@ public class SaleRestResource {
 
     @Autowired
     WebSaleService webSaleService;
-    @Autowired
-    SaleRepository saleRepository;
 
     @ApiOperation(value = "List of sales", notes = "Get list of sales filtered by name as default")
     @ApiImplicitParams({
@@ -59,19 +57,6 @@ public class SaleRestResource {
     SaleDTO one(@ApiParam(value = "Sale ID", required = true)
                 @PathVariable Long id) {
         return webSaleService.getById(id);
-    }
-
-    @ApiOperation(value = "Download instance of the DB", notes = "Export in excel file")
-    @GetMapping("/sales/download")
-    public void exportToExcel(HttpServletResponse response) throws IOException {
-        response.setContentType("application/octet-stream");
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=sales.xlsx";
-        response.setHeader(headerKey, headerValue);
-
-        List<Sale> sales = webSaleService.findAll();
-        SaleExcelExporter saleExcelExporter = new SaleExcelExporter(sales);
-        saleExcelExporter.export(response);
     }
 
     @ApiOperation(value = "Post new sale entity to DB", notes = "Post new sale entity to DB")
