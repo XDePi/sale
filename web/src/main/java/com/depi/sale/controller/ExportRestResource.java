@@ -20,19 +20,6 @@ public class ExportRestResource {
     @Autowired
     private AppExportService appExportService;
 
-    //  @ApiOperation(value = "Download instance of the DB", notes = "Export in excel file")
-    //  @GetMapping("/sales/download")
-    //  public void exportToExcel(HttpServletResponse response) throws IOException {
-    //      response.setContentType("application/octet-stream");
-    //      String headerKey = "Content-Disposition";
-    //      String headerValue = "attachment; filename=sales.xlsx";
-    //      response.setHeader(headerKey, headerValue);
-//
-    //      File file = appExportService.exportMappings();
-    //      SaleExcelExporter saleExcelExporter = new SaleExcelExporter(f);
-    //      saleExcelExporter.export(response);
-    //  }
-
     @GetMapping("/sales/download")
     public ResponseEntity<Resource> download() throws IOException {
         HttpHeaders headers = new HttpHeaders();

@@ -238,7 +238,7 @@ public class ExcelMarshaller extends AbstractMarshaller {
                 }
                 break;
             case STRING:
-                addStringCell(row, column, (String) value);
+                addStringCell(row, column, value);
                 break;
             case DATE:
                 addDateCell(row, column, (Date) value);
@@ -267,13 +267,13 @@ public class ExcelMarshaller extends AbstractMarshaller {
         }
     }
 
-    private Cell addStringCell(Row row, int counter, String value) {
+    private Cell addStringCell(Row row, int counter, Object value) {
         Cell cell = row.createCell(counter, CellType.STRING);
         CellStyle style = row.getSheet().getColumnStyle(counter);
         if (style != null) {
             cell.setCellStyle(style);
         }
-        cell.setCellValue(row.getSheet().getWorkbook().getCreationHelper().createRichTextString(StringUtils.trimToEmpty(value)));
+        cell.setCellValue(row.getSheet().getWorkbook().getCreationHelper().createRichTextString(StringUtils.trimToEmpty(value.toString())));
         return cell;
     }
 
