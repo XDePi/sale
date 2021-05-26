@@ -1,6 +1,5 @@
 package com.depi.sale.controller;
 
-import com.depi.sale.service.WebSaleService;
 import feed.exports.AppExportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -18,21 +17,21 @@ import java.io.IOException;
 @RestController
 public class ExportRestResource {
 
+    @Autowired
+    private AppExportService appExportService;
 
-    AppExportService appExportService;
-
-  //  @ApiOperation(value = "Download instance of the DB", notes = "Export in excel file")
-  //  @GetMapping("/sales/download")
-  //  public void exportToExcel(HttpServletResponse response) throws IOException {
-  //      response.setContentType("application/octet-stream");
-  //      String headerKey = "Content-Disposition";
-  //      String headerValue = "attachment; filename=sales.xlsx";
-  //      response.setHeader(headerKey, headerValue);
+    //  @ApiOperation(value = "Download instance of the DB", notes = "Export in excel file")
+    //  @GetMapping("/sales/download")
+    //  public void exportToExcel(HttpServletResponse response) throws IOException {
+    //      response.setContentType("application/octet-stream");
+    //      String headerKey = "Content-Disposition";
+    //      String headerValue = "attachment; filename=sales.xlsx";
+    //      response.setHeader(headerKey, headerValue);
 //
-  //      File file = appExportService.exportMappings();
-  //      SaleExcelExporter saleExcelExporter = new SaleExcelExporter(f);
-  //      saleExcelExporter.export(response);
-  //  }
+    //      File file = appExportService.exportMappings();
+    //      SaleExcelExporter saleExcelExporter = new SaleExcelExporter(f);
+    //      saleExcelExporter.export(response);
+    //  }
 
     @GetMapping("/sales/download")
     public ResponseEntity<Resource> download() throws IOException {

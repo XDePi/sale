@@ -16,11 +16,11 @@ import java.util.stream.Collectors;
 public class ExportSaleMappingContentResolverImpl implements ExportSaleMappingContentResolver {
     public static final String TAB_NAME = "Sales";
 
-    private final ExportMerchantProductKeyResolver exportMerchantProductKeyResolver;
-
-    public ExportSaleMappingContentResolverImpl(ExportMerchantProductKeyResolver exportMerchantProductKeyResolver) {
-        this.exportMerchantProductKeyResolver = exportMerchantProductKeyResolver;
-    }
+//    private final ExportMerchantProductKeyResolver exportMerchantProductKeyResolver;
+//
+//    public ExportSaleMappingContentResolverImpl(ExportMerchantProductKeyResolver exportMerchantProductKeyResolver) {
+//        this.exportMerchantProductKeyResolver = exportMerchantProductKeyResolver;
+//    }
 
     @NonNull
     @Override
@@ -30,11 +30,11 @@ public class ExportSaleMappingContentResolverImpl implements ExportSaleMappingCo
         result.addColumn(SaleColumnKey.DATE.getName(), ExcelColumnDescriptor.CellType.STRING);
         result.addColumn(SaleColumnKey.CUSTOMER_NAME.getName(), ExcelColumnDescriptor.CellType.STRING);
         result.addColumn(SaleColumnKey.AMOUNT.getName(), ExcelColumnDescriptor.CellType.FLOAT2);
-        List<Map.Entry<String, ExcelColumnDescriptor>> entries = exportMerchantProductKeyResolver.buildDescriptor().getColumnsMap().entrySet()
-                .stream().sorted(Comparator.comparing(pair -> pair.getValue().getNumber())).collect(Collectors.toList());
-        for (Map.Entry<String, ExcelColumnDescriptor> pair : entries) {
-            result.addColumn(pair.getKey(), pair.getValue().getCellType(), pair.getValue().isRequired());
-        }
+//        List<Map.Entry<String, ExcelColumnDescriptor>> entries = exportMerchantProductKeyResolver.buildDescriptor().getColumnsMap().entrySet()
+//                .stream().sorted(Comparator.comparing(pair -> pair.getValue().getNumber())).collect(Collectors.toList());
+//        for (Map.Entry<String, ExcelColumnDescriptor> pair : entries) {
+//            result.addColumn(pair.getKey(), pair.getValue().getCellType(), pair.getValue().isRequired());
+//        }
         return result;
     }
 
