@@ -38,4 +38,5 @@ public class Sale {
 
     public Sale() {
     }
+
 }

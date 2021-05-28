@@ -2,9 +2,7 @@ package com.depi.sale.controller;
 
 import com.depi.sale.dto.SaleDTO;
 import com.depi.sale.entity.Sale;
-import com.depi.sale.repository.SaleRepository;
 import com.depi.sale.service.WebSaleService;
-import exporter.SaleExcelExporter;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -17,11 +15,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class SaleRestResource {

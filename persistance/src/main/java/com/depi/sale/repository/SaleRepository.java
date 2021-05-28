@@ -3,9 +3,11 @@ package com.depi.sale.repository;
 import com.depi.sale.entity.Sale;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.QueryHint;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -13,6 +15,10 @@ import java.util.List;
 public interface SaleRepository extends PagingAndSortingRepository<Sale, Long> {
 
     Page<Sale> findAll(@NotNull Pageable pageable);
-    List<Sale> findAll();
+
+    @QueryHints(@QueryHint(value = "1", name = org.hibernate.jpa.QueryHints.HINT_FETCH_SIZE))
+    Page<Sale> findByIdGreaterThan(long from, Pageable pageable);
+
+    Long countByIdGreaterThan(Long from);
 
 }

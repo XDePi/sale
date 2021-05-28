@@ -1,19 +1,18 @@
 package feed.exports.impl;
 
-import com.depi.sale.entity.Sale;
 import com.depi.sale.repository.SaleRepository;
 import feed.excel.export.AbstractMarshaller;
 import feed.excel.export.ExcelMarshaller;
+import feed.excel.export.IdentitySaleIterator;
 import feed.exports.AppExportService;
 import feed.exports.sale.ExportSaleMappingContentResolver;
 import feed.exports.sale.impl.ExportSaleMappingContentResolverImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class AppExportServiceImpl implements AppExportService {
@@ -25,7 +24,6 @@ public class AppExportServiceImpl implements AppExportService {
 
     public AppExportServiceImpl(ExportSaleMappingContentResolver saleMappingContentResolver) {
         this.saleMappingContentResolver = saleMappingContentResolver;
-
     }
 
     protected AbstractMarshaller getMarshaller() throws IOException {
@@ -33,16 +31,18 @@ public class AppExportServiceImpl implements AppExportService {
     }
 
     @Override
-    public File exportMappings() throws IOException {
+    public File exportMappings(Long from, Pageable pageable) throws IOException {
         File tempFile;
         try (AbstractMarshaller marshaller = getMarshaller()) {
-            List<Sale> sales = saleRepository.findAll();
+            IdentitySaleIterator saleIterator = new IdentitySaleIterator
+                    (saleRepository::findByIdGreaterThan, saleRepository::countByIdGreaterThan, pageable, from);
             marshaller.marshallSheet(ExportSaleMappingContentResolverImpl.TAB_NAME, saleMappingContentResolver,
-                    sales.iterator());
+                    saleIterator);
             marshaller.finalizeWritings();
             tempFile = marshaller.getFile();
         }
         return tempFile;
     }
+
 }
 

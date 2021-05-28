@@ -1,8 +1,7 @@
 package feed.exports;
 
 
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,5 +12,5 @@ public interface AppExportService {
      * @return export file
      * @throws IOException exception
      */
-    File exportMappings() throws IOException;
+    File exportMappings(Long from, Pageable pageable) throws IOException;
 }

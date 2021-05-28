@@ -8,14 +8,12 @@ import org.springframework.data.domain.Pageable;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface WebSaleService {
 
     @NotNull
     Page<SaleDTO> findAll(Pageable pageable);
-
-    @NotNull
-    List<Sale> findAll();
 
     @NotNull
     SaleDTO newSale(Sale sale);
