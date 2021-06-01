@@ -4,13 +4,14 @@ import com.depi.sale.entity.Sale;
 import feed.SaleColumnKey;
 import feed.excel.export.ExcelColumnDescriptor;
 import feed.excel.export.ExcelFeedDescriptor;
-import feed.exports.sale.ExportMerchantProductKeyResolver;
 import feed.exports.sale.ExportSaleMappingContentResolver;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ExportSaleMappingContentResolverImpl implements ExportSaleMappingContentResolver {

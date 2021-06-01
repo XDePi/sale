@@ -6,34 +6,25 @@ import com.depi.sale.entity.Sale;
 import com.depi.sale.exceptions.SaleNotFoundException;
 import com.depi.sale.repository.SaleRepository;
 import com.depi.sale.service.WebSaleService;
-import feed.exports.AppExportService;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 
-import javax.validation.constraints.NotNull;
-import java.io.File;
-import java.io.FileInputStream;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doReturn;
 
 @ActiveProfiles({"test"})
 @SpringBootTest(classes = {SaleApplication.class,}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ExportProductTestIT {
+public class SearchSaleTestIT {
 
     @Autowired
     private SaleRepository saleRepository;
@@ -42,8 +33,7 @@ public class ExportProductTestIT {
     private WebSaleService saleService;
 
     @Test
-    @DisplayName("Test findById Success")
-    void testFindById() {
+    void getById_when_invoked_then_returns_SaleDTO_object() {
         Sale sale = new Sale();
         sale.setCustomerName("TESTED1");
         sale.setAmount(BigDecimal.valueOf(1.00));
@@ -59,14 +49,12 @@ public class ExportProductTestIT {
     }
 
     @Test
-    @DisplayName("Test findById Not Found")
-    void testFindByIdNotFound() {
+    void getById_when_entity_not_found_then_throws_an_exception() {
         assertThrows(SaleNotFoundException.class, () -> saleService.getById(1L));
     }
 
     @Test
-    @DisplayName("Test findAll")
-    void testFindAll() {
+    void findAll_when_invoked_then_returns_a_page_with_two_entities() {
         Sale sale = new Sale();
         sale.setCustomerName("TESTED2");
         sale.setAmount(BigDecimal.TEN);
@@ -81,32 +69,38 @@ public class ExportProductTestIT {
 
         Page<SaleDTO> sales1 = saleService.findAll(pageable);
 
-        assertEquals(2, sales1.getSize(), "findAll should return 2 sales");
+        assertEquals(2, sales1.getSize(), "findAll should return 2 sales because was inserted only 2 entities and page size is equal to 2");
 
         saleRepository.delete(sale);
         saleRepository.delete(sale1);
     }
 
     @Test
-    @DisplayName("Test save Sale")
-    void testSave() {
+    void newSale_when_invoked_then_saves_new_entity() {
         Sale sale = new Sale();
         sale.setCustomerName("TESTED4");
         sale.setAmount(BigDecimal.ONE);
 
         SaleDTO returnedSaleDTO = saleService.newSale(sale);
 
-        assertNotNull(returnedSaleDTO, "The saved saleDTO should not be null");
-        assertEquals(4, returnedSaleDTO.getId(), "SaleDTO id should be 1");
+        assertNotNull(returnedSaleDTO, "The saved saleDTO should not be null because an entity was posted ");
+        assertEquals("TESTED4", returnedSaleDTO.getCustomerName(), "SaleDTO's customer name should be the same as sale's name because saleService must have returned sale entity");
+        assertEquals(BigDecimal.ONE, returnedSaleDTO.getAmount(), "SaleDTO's amount should be the same as sale's amount because saleService must have returned sale entity");
         saleRepository.delete(sale);
     }
 
     @Test
-    @DisplayName("Test searchByName")
-    void testSearchByName() {
-        for (int i = 1; i <= 30; i++) {
+    void findAll_when_invoked_then_returns_a_page_sorted_by_customerName_and_with_pageSize_10() {
+        List<String> list = new ArrayList<>();
+        list.add("A");
+        list.add("B");
+        list.add("C");
+        list.add("D");
+        list.add("E");
+
+        for (int i = 0; i < 5; i++) {
             Sale sale = new Sale();
-            sale.setCustomerName("TESTED" + i);
+            sale.setCustomerName(list.get(i));
             sale.setAmount(BigDecimal.ONE);
             saleRepository.save(sale);
         }
@@ -115,23 +109,34 @@ public class ExportProductTestIT {
 
         assertEquals(0, saleDTOS.getNumber(), "Page number should be 0");
         assertEquals(10, saleDTOS.getSize(), "Page size should be 10");
-        assertTrue(saleDTOS.getSort().isSorted(), "Page must be sorted by name");
+
+        assertEquals("A", saleDTOS.toList().get(0).getCustomerName());
+        assertEquals("B", saleDTOS.toList().get(1).getCustomerName());
+        assertEquals("C", saleDTOS.toList().get(2).getCustomerName());
+        assertEquals("D", saleDTOS.toList().get(3).getCustomerName());
+        assertEquals("E", saleDTOS.toList().get(4).getCustomerName());
     }
 
     @Test
-    @DisplayName("Test searchByDate")
-    void testSearchByDate() {
+    void findAll_when_invoked_then_returns_a_page_sorted_by_date_and_with_pageSize_10() {
         for (int i = 1; i <= 30; i++) {
             Sale sale = new Sale();
-            sale.setCustomerName("TESTED" + i);
+            sale.setCustomerName("TESTED");
             sale.setAmount(BigDecimal.ONE);
             saleRepository.save(sale);
         }
         Pageable pageable = PageRequest.of(0, 10, Sort.Direction.ASC, "date");
         Page<SaleDTO> saleDTOS = saleService.findAll(pageable);
 
-        assertEquals(0, saleDTOS.getNumber(), "Page number should be 0");
+        assertEquals(0, saleDTOS.getNumber(), "");
         assertEquals(10, saleDTOS.getSize(), "Page size should be 10");
-        assertTrue(saleDTOS.getSort().isSorted(), "Page must be sorted by date");
+        assertTrue(saleDTOS.toList().get(0).getDate()
+                .compareTo(saleDTOS.toList().get(1).getDate()) < 0);
+        assertTrue(saleDTOS.toList().get(1).getDate()
+                .compareTo(saleDTOS.toList().get(2).getDate()) < 0);
+        assertTrue(saleDTOS.toList().get(2).getDate()
+                .compareTo(saleDTOS.toList().get(3).getDate()) < 0);
+        assertTrue(saleDTOS.toList().get(3).getDate()
+                .compareTo(saleDTOS.toList().get(4).getDate()) < 0);
     }
 }

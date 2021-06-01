@@ -8,7 +8,6 @@ import feed.exports.AppExportService;
 import feed.exports.sale.ExportSaleMappingContentResolver;
 import feed.exports.sale.impl.ExportSaleMappingContentResolverImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
