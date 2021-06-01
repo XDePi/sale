@@ -20,4 +20,6 @@ public interface SaleRepository extends PagingAndSortingRepository<Sale, Long> {
 
     Long countByIdGreaterThan(Long from);
 
+    Sale findByCustomerName(String name);
+
 }

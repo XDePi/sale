@@ -17,10 +17,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.test.context.ActiveProfiles;
 
 import javax.validation.constraints.NotNull;
@@ -38,7 +35,7 @@ import static org.mockito.Mockito.doReturn;
 @SpringBootTest(classes = {SaleApplication.class,}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ExportProductTestIT {
 
-    @MockBean
+    @Autowired
     private SaleRepository saleRepository;
 
     @Autowired
@@ -48,16 +45,17 @@ public class ExportProductTestIT {
     @DisplayName("Test findById Success")
     void testFindById() {
         Sale sale = new Sale();
-        sale.setId(1);
-        sale.setDate(new Date());
-        sale.setCustomerName("TESTED");
+        sale.setCustomerName("TESTED1");
         sale.setAmount(BigDecimal.valueOf(1.00));
-        doReturn(Optional.of(sale)).when(saleRepository).findById(sale.getId());
+        saleRepository.save(sale);
+        Sale sale1 = saleRepository.findByCustomerName(sale.getCustomerName());
 
-        Optional<SaleDTO> returnedSaleDTO = Optional.ofNullable(saleService.getById(sale.getId()));
+        Optional<SaleDTO> returnedSaleDTO = Optional.ofNullable(saleService.getById(sale1.getId()));
 
         assertTrue(returnedSaleDTO.isPresent(), "Sale not found");
-        assertSame(returnedSaleDTO.get().getId(), sale.getId(), "The SaleDTO returned not the same");
+        assertEquals(returnedSaleDTO.get().getId(), sale1.getId(), "The SaleDTO returned not the same");
+
+        saleRepository.delete(sale);
     }
 
     @Test
@@ -70,27 +68,70 @@ public class ExportProductTestIT {
     @DisplayName("Test findAll")
     void testFindAll() {
         Sale sale = new Sale();
-        sale.setId(1);
-        sale.setDate(new Date());
-        sale.setCustomerName("TESTED");
+        sale.setCustomerName("TESTED2");
         sale.setAmount(BigDecimal.TEN);
+        saleRepository.save(sale);
 
         Sale sale1 = new Sale();
-        sale1.setId(2);
-        sale1.setDate(new Date());
-        sale1.setCustomerName("TESTED2");
+        sale1.setCustomerName("TESTED3");
         sale1.setAmount(BigDecimal.TEN);
+        saleRepository.save(sale1);
 
         Pageable pageable = PageRequest.of(0, 2);
-        List<Sale> sales = new ArrayList<>();
-        sales.add(sale);
-        sales.add(sale1);
-        Page<Sale> salesPage = new PageImpl<>(sales);
-
-        doReturn(salesPage).when(saleRepository).findAll(pageable);
 
         Page<SaleDTO> sales1 = saleService.findAll(pageable);
 
-        assertEquals(2, sales1.getTotalElements(), "findAll should return 2 sales");
+        assertEquals(2, sales1.getSize(), "findAll should return 2 sales");
+
+        saleRepository.delete(sale);
+        saleRepository.delete(sale1);
+    }
+
+    @Test
+    @DisplayName("Test save Sale")
+    void testSave() {
+        Sale sale = new Sale();
+        sale.setCustomerName("TESTED4");
+        sale.setAmount(BigDecimal.ONE);
+
+        SaleDTO returnedSaleDTO = saleService.newSale(sale);
+
+        assertNotNull(returnedSaleDTO, "The saved saleDTO should not be null");
+        assertEquals(4, returnedSaleDTO.getId(), "SaleDTO id should be 1");
+        saleRepository.delete(sale);
+    }
+
+    @Test
+    @DisplayName("Test searchByName")
+    void testSearchByName() {
+        for (int i = 1; i <= 30; i++) {
+            Sale sale = new Sale();
+            sale.setCustomerName("TESTED" + i);
+            sale.setAmount(BigDecimal.ONE);
+            saleRepository.save(sale);
+        }
+        Pageable pageable = PageRequest.of(0, 10, Sort.Direction.ASC, "customerName");
+        Page<SaleDTO> saleDTOS = saleService.findAll(pageable);
+
+        assertEquals(0, saleDTOS.getNumber(), "Page number should be 0");
+        assertEquals(10, saleDTOS.getSize(), "Page size should be 10");
+        assertTrue(saleDTOS.getSort().isSorted(), "Page must be sorted by name");
+    }
+
+    @Test
+    @DisplayName("Test searchByDate")
+    void testSearchByDate() {
+        for (int i = 1; i <= 30; i++) {
+            Sale sale = new Sale();
+            sale.setCustomerName("TESTED" + i);
+            sale.setAmount(BigDecimal.ONE);
+            saleRepository.save(sale);
+        }
+        Pageable pageable = PageRequest.of(0, 10, Sort.Direction.ASC, "date");
+        Page<SaleDTO> saleDTOS = saleService.findAll(pageable);
+
+        assertEquals(0, saleDTOS.getNumber(), "Page number should be 0");
+        assertEquals(10, saleDTOS.getSize(), "Page size should be 10");
+        assertTrue(saleDTOS.getSort().isSorted(), "Page must be sorted by date");
     }
 }

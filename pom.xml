@@ -20,7 +20,8 @@
     <name>sale</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <java.version>15</java.version>
+        <testcontainers.version>1.14.2</testcontainers.version>
+        <java.version>16</java.version>
     </properties>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api -->
@@ -108,7 +109,33 @@
             <scope>test</scope>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.vaadin.external.google</groupId>
+                    <artifactId>android-json</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 
