@@ -12,5 +12,5 @@ public interface AppExportService {
      * @return export file
      * @throws IOException exception
      */
-    File exportMappings(Long from, Pageable pageable) throws IOException;
+    File exportMappings() throws IOException;
 }

@@ -16,7 +16,6 @@ public interface SaleRepository extends PagingAndSortingRepository<Sale, Long> {
 
     Page<Sale> findAll(@NotNull Pageable pageable);
 
-    @QueryHints(@QueryHint(value = "1", name = org.hibernate.jpa.QueryHints.HINT_FETCH_SIZE))
     Page<Sale> findByIdGreaterThan(long from, Pageable pageable);
 
     Long countByIdGreaterThan(Long from);

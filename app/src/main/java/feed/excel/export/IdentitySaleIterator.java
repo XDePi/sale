@@ -12,19 +12,16 @@ import java.util.function.Function;
 
 public class IdentitySaleIterator implements Iterator<Sale> {
 
-    private Long lastId;
+    private Long lastId = 0L;
     private BiFunction<Long, Pageable, Page<Sale>> getNextBatchFunction;
     private Function<Long, Long> restPartSizeFunction;
-    private int batchSize;
-    private Sort sort;
-    int page;
+    private final int batchSize = 10;
+    private final Sort sort;
+    int page = 0;
 
-    public IdentitySaleIterator(BiFunction<Long, Pageable, Page<Sale>> getNextBatchFunction, Function<Long, Long> restPartSizeFunction, Pageable pageable, Long from) {
+    public IdentitySaleIterator(BiFunction<Long, Pageable, Page<Sale>> getNextBatchFunction, Function<Long, Long> restPartSizeFunction) {
         this.getNextBatchFunction = getNextBatchFunction;
         this.restPartSizeFunction = restPartSizeFunction;
-        this.batchSize = pageable.getPageSize();
-        this.page = pageable.getPageNumber();
-        this.lastId = from;
         sort = Sort.by(Sort.Direction.ASC, "id");
     }
     @Override

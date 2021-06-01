@@ -31,11 +31,11 @@ public class AppExportServiceImpl implements AppExportService {
     }
 
     @Override
-    public File exportMappings(Long from, Pageable pageable) throws IOException {
+    public File exportMappings() throws IOException {
         File tempFile;
         try (AbstractMarshaller marshaller = getMarshaller()) {
             IdentitySaleIterator saleIterator = new IdentitySaleIterator
-                    (saleRepository::findByIdGreaterThan, saleRepository::countByIdGreaterThan, pageable, from);
+                    (saleRepository::findByIdGreaterThan, saleRepository::countByIdGreaterThan);
             marshaller.marshallSheet(ExportSaleMappingContentResolverImpl.TAB_NAME, saleMappingContentResolver,
                     saleIterator);
             marshaller.finalizeWritings();

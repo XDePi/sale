@@ -38,7 +38,7 @@ public class SaleRestResource {
 
     })
     @GetMapping("/sales")
-    Page<SaleDTO> findAll(@PageableDefault
+    public Page<SaleDTO> findAll(@PageableDefault
                           @SortDefault(sort = "customerName", direction = Sort.Direction.ASC)
                                   @ApiIgnore Pageable pageable) {
         return webSaleService.findAll(pageable);
@@ -47,21 +47,21 @@ public class SaleRestResource {
 
     @ApiOperation(value = "Get sale by Sale ID", notes = "Get sale by Sale ID")
     @GetMapping("/sales/{id}")
-    SaleDTO one(@ApiParam(value = "Sale ID", required = true)
+    public SaleDTO one(@ApiParam(value = "Sale ID", required = true)
                 @PathVariable Long id) {
         return webSaleService.getById(id);
     }
 
     @ApiOperation(value = "Post new sale entity to DB", notes = "Post new sale entity to DB")
     @PostMapping("/sales")
-    SaleDTO newSale(@ApiParam(value = "New Sale entity", required = true)
+    public SaleDTO newSale(@ApiParam(value = "New Sale entity", required = true)
                     @RequestBody Sale newSale) {
         return webSaleService.newSale(newSale);
     }
 
     @ApiOperation(value = "Update existing Sale entity in DB", notes = "Update existing Sale entity")
     @PutMapping("/sales/{id}")
-    SaleDTO replaceSale(@ApiParam(value = "Sale entity", required = true)
+    public SaleDTO replaceSale(@ApiParam(value = "Sale entity", required = true)
                         @RequestBody Sale newSale,
                         @ApiParam(value = "Sale ID which needed to be updated")
                         @PathVariable Long id) {
@@ -70,7 +70,7 @@ public class SaleRestResource {
 
     @ApiOperation(value = "Delete existing Sale entity from DB", notes = "Delete existing Sale entity")
     @DeleteMapping("/sales/{id}")
-    void deleteSale(@ApiParam(value = "Sale ID", required = true)
+    public void deleteSale(@ApiParam(value = "Sale ID", required = true)
                     @PathVariable Long id) {
         webSaleService.deleteSale(id);
     }
