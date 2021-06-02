@@ -128,8 +128,8 @@ public class SearchSaleTestIT {
         Pageable pageable = PageRequest.of(0, 10, Sort.Direction.ASC, "date");
         Page<SaleDTO> saleDTOS = saleService.findAll(pageable);
 
-        assertEquals(0, saleDTOS.getNumber(), "");
-        assertEquals(10, saleDTOS.getSize(), "Page size should be 10");
+        assertEquals(0, saleDTOS.getNumber(), "Page number must be 0 because method was given a 0 parameter to it");
+        assertEquals(10, saleDTOS.getSize(), "Page size must be 10 because method was given a 10 parameter to it");
         assertTrue(saleDTOS.toList().get(0).getDate()
                 .compareTo(saleDTOS.toList().get(1).getDate()) < 0);
         assertTrue(saleDTOS.toList().get(1).getDate()
