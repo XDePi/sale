@@ -31,4 +31,13 @@ public class SaleDTO {
     @ApiModelProperty(value = "Sale amount", required = true)
     private BigDecimal amount;
 
+    @Override
+    public String toString() {
+        return "SaleDTO{" +
+                "id=" + id +
+                ", date=" + date +
+                ", customerName='" + customerName + '\'' +
+                ", amount=" + amount +
+                '}';
+    }
 }

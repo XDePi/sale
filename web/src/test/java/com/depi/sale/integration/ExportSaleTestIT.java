@@ -1,44 +1,33 @@
 package com.depi.sale.integration;
 
 import com.depi.sale.SaleApplication;
-import com.depi.sale.dto.SaleDTO;
 import com.depi.sale.entity.Sale;
-import com.depi.sale.repository.SaleRepository;
-import com.depi.sale.service.WebSaleService;
 import com.poiji.bind.Poiji;
-import feed.exports.AppExportService;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ActiveProfiles({"test"})
-@SpringBootTest(classes = {SaleApplication.class,}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ExportSaleTestIT {
+@SpringBootTest(classes = {SaleApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class ExportSaleTestIT extends BaseIT {
 
-    @Autowired
-    SaleRepository saleRepository;
-
-    @Autowired
-    AppExportService appExportService;
+    @BeforeEach
+    void init() {
+        saleRepository.deleteAll();
+    }
 
     @Test
-    void exportMappings_export_sales() throws IOException {
+    void exportMapping_when_only_one_record_in_persistance_then_it_is_exported() throws IOException {
         Sale sale = new Sale();
         sale.setDate(new Date());
         sale.setCustomerName("DENIS");

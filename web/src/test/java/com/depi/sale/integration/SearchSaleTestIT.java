@@ -4,10 +4,8 @@ import com.depi.sale.SaleApplication;
 import com.depi.sale.dto.SaleDTO;
 import com.depi.sale.entity.Sale;
 import com.depi.sale.exceptions.SaleNotFoundException;
-import com.depi.sale.repository.SaleRepository;
-import com.depi.sale.service.WebSaleService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,13 +22,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles({"test"})
 @SpringBootTest(classes = {SaleApplication.class,}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SearchSaleTestIT {
+public class SearchSaleTestIT extends BaseIT{
 
-    @Autowired
-    private SaleRepository saleRepository;
-
-    @Autowired
-    private WebSaleService saleService;
+    @BeforeEach
+    void init() {
+        saleRepository.deleteAll();
+    }
 
     @Test
     void getById_when_invoked_then_returns_SaleDTO_object() {
