@@ -13,10 +13,4 @@ public class SaleApplication {
     public static void main(String[] args) {
         SpringApplication.run(SaleApplication.class, args);
     }
-
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
-
 }

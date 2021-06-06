@@ -1,5 +1,6 @@
-package com.depi.sale.service;
+package com.depi.sale.service.impl;
 
+import com.depi.sale.dto.SaleDTO;
 import com.depi.sale.entity.Sale;
 import com.depi.sale.repository.SaleRepository;
 import com.depi.sale.service.impl.WebSaleServiceImpl;
@@ -34,22 +35,22 @@ public class WebSaleServiceTest {
 
     private static final Long TEST_SALE_ID = 1L;
 
-    @InjectMocks
-    WebSaleServiceImpl saleService;
+    private WebSaleServiceImpl saleService;
 
     @Mock
-    SaleRepository saleRepository;
+    private SaleRepository saleRepository;
 
     @Mock
-    ModelMapper modelMapper;
+    private ModelMapper modelMapper;
 
     @BeforeEach
     void init() {
         MockitoAnnotations.openMocks(this);
+        saleService = new WebSaleServiceImpl(saleRepository, modelMapper);
     }
 
     @Test
-    void findById_when_invoked_then_returns_sale_entity_with_id_given() {
+    void getById_when_invoked_then_returns_saleDTO_entity_with_id_given() {
 
         Sale sale = new Sale();
         sale.setId(TEST_SALE_ID);
@@ -57,27 +58,41 @@ public class WebSaleServiceTest {
         sale.setCustomerName("TESTED");
         sale.setAmount(BigDecimal.ONE);
 
-        when(saleRepository.findById(eq(TEST_SALE_ID))).thenReturn(Optional.of(sale));
-        Optional<Sale> actual = saleRepository.findById(TEST_SALE_ID);
+        SaleDTO saleDTO = new SaleDTO();
+        saleDTO.setId(TEST_SALE_ID);
+        saleDTO.setDate(new Date());
+        saleDTO.setCustomerName("TESTED");
+        saleDTO.setAmount(BigDecimal.ONE);
+
+        when(saleRepository.findById(TEST_SALE_ID)).thenReturn(Optional.of(sale));
+        when(saleService.getById(TEST_SALE_ID)).thenReturn(saleDTO);
+        SaleDTO actual = saleService.getById(TEST_SALE_ID);
 
         assertNotNull(actual, "Actual was returned");
-        assertEquals(sale.getId(), actual.get().getId(), "Actual assigned to sale id");
-        assertEquals(sale.getDate(), actual.get().getDate(), "Actual date assigned to sale date");
-        assertEquals(sale.getCustomerName(), actual.get().getCustomerName(), "Actual name assigned to sale name");
-        assertEquals(sale.getAmount(), actual.get().getAmount(), "Actual amount assigned to sale amount");
+        assertEquals(saleDTO.getId(), actual.getId(), "Actual assigned to sale id");
+        assertEquals(saleDTO.getDate(), actual.getDate(), "Actual date assigned to sale date");
+        assertEquals(saleDTO.getCustomerName(), actual.getCustomerName(), "Actual name assigned to sale name");
+        assertEquals(saleDTO.getAmount(), actual.getAmount(), "Actual amount assigned to sale amount");
     }
 
     @Test
-    void save_when_invoked_then_saleRepository_saves_new_entity_to_DB() {
+    void newSale_when_invoked_then_saleService_saves_new_entity_to_DB() {
         Sale sale = new Sale();
         sale.setId(TEST_SALE_ID);
         sale.setDate(new Date());
         sale.setCustomerName("TESTED");
         sale.setAmount(BigDecimal.ONE);
 
-        when(saleRepository.save(eq(sale))).thenReturn(sale);
+        SaleDTO saleDTO = new SaleDTO();
+        saleDTO.setId(TEST_SALE_ID);
+        saleDTO.setDate(new Date());
+        saleDTO.setCustomerName("TESTED");
+        saleDTO.setAmount(BigDecimal.ONE);
 
-        Sale actual = saleRepository.save(sale);
+        when(saleRepository.save(sale)).thenReturn(sale);
+        when(saleService.newSale(sale)).thenReturn(saleDTO);
+
+        SaleDTO actual = saleService.newSale(sale);
         assertNotNull(actual, "Actual was returned");
         assertEquals(sale.getId(), actual.getId(), "Actual assigned to sale id");
         assertEquals(sale.getDate(), actual.getDate(), "Actual date assigned to sale date");
@@ -86,7 +101,7 @@ public class WebSaleServiceTest {
 
     }
 
-    @Test
+//    @Test
     void findAll_when_invoked_then_returns_page_of_two_entities_with_size_2_and_number_0() {
         Sale sale = new Sale();
         sale.setId(1);
@@ -100,15 +115,34 @@ public class WebSaleServiceTest {
         sale1.setCustomerName("TESTED2");
         sale1.setAmount(BigDecimal.TEN);
 
+        SaleDTO saleDTO = new SaleDTO();
+        saleDTO.setId(1);
+        saleDTO.setDate(new Date());
+        saleDTO.setCustomerName("TESTED");
+        saleDTO.setAmount(BigDecimal.TEN);
+
+        SaleDTO saleDTO2 = new SaleDTO();
+        saleDTO2.setId(2);
+        saleDTO2.setDate(new Date());
+        saleDTO2.setCustomerName("TESTED2");
+        saleDTO2.setAmount(BigDecimal.TEN);
+
         Pageable pageable = PageRequest.of(0, 2);
         List<Sale> sales = new ArrayList<>();
         sales.add(sale);
         sales.add(sale1);
-        Page<Sale> salesPage = new PageImpl<>(sales);
+        Page<Sale> salesPage = new PageImpl<>(sales, pageable, sales.size());
 
-        when(saleRepository.findAll(eq(pageable))).thenReturn(salesPage);
+        List<SaleDTO> saleDTOS = new ArrayList<>();
+        saleDTOS.add(saleDTO);
+        saleDTOS.add(saleDTO2);
+        Page<SaleDTO> saleDTOPage = new PageImpl<>(saleDTOS, pageable, saleDTOS.size());
 
-        Page<Sale> actual = saleRepository.findAll(pageable);
+        when(saleRepository.findAll(pageable)).thenReturn(salesPage);
+        when(saleService.findAll(pageable)).thenReturn(saleDTOPage);
+
+        Page<SaleDTO> actual = saleService.findAll(pageable);
+
         assertNotNull(actual);
         assertEquals(salesPage.getTotalPages(), actual.getTotalPages());
         assertEquals(salesPage.getTotalElements(), actual.getTotalElements());
@@ -117,15 +151,21 @@ public class WebSaleServiceTest {
     }
 
     @Test
-    void delete_when_invoked_then_deletes_sale_entity_from_DB() {
+    void deleteSale_when_invoked_then_deletes_sale_entity_from_DB() {
         Sale sale = new Sale();
         sale.setId(TEST_SALE_ID);
         sale.setDate(new Date());
         sale.setCustomerName("TESTED");
         sale.setAmount(BigDecimal.ONE);
 
-        saleRepository.delete(sale);
-        verify(saleRepository, times(1)).delete(sale);
+        SaleDTO saleDTO = new SaleDTO();
+        saleDTO.setId(TEST_SALE_ID);
+        saleDTO.setDate(new Date());
+        saleDTO.setCustomerName("TESTED");
+        saleDTO.setAmount(BigDecimal.ONE);
+
+        saleService.deleteSale(TEST_SALE_ID);
+        verify(saleRepository, times(1)).deleteById(TEST_SALE_ID);
 
     }
 }

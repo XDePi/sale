@@ -1,6 +1,5 @@
 package com.depi.sale.entity;
 
-import com.poiji.annotation.ExcelCellName;
 import lombok.Data;
 import lombok.NonNull;
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,25 +19,21 @@ public class Sale {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     @NonNull
-    @ExcelCellName("sale_id")
     private long id;
 
     @Column()
     @CreationTimestamp
     @NonNull
-    @ExcelCellName("date")
     private Date date;
 
     @Column(name = "customer_name")
     @NotBlank
     @NonNull
-    @ExcelCellName("customer_name")
     private String customerName;
 
     @Column
     @NonNull
     @Positive
-    @ExcelCellName("amount")
     private BigDecimal amount;
 
     public Sale() {

@@ -40,7 +40,7 @@ public interface WebSaleService {
      * @return
      */
     @NotNull
-    SaleDTO replaceSale(Sale sale, Long id);
+    SaleDTO replaceSale(Sale sale);
 
     /**
      * Deletes an existing entity from the DB and representation

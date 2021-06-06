@@ -21,6 +21,11 @@ public class WebSaleServiceImpl implements WebSaleService {
     @Autowired
     SaleRepository saleRepository;
 
+    public WebSaleServiceImpl(SaleRepository saleRepository, ModelMapper modelMapper) {
+        this.saleRepository = saleRepository;
+        this.modelMapper = modelMapper;
+    }
+
     @Override
     @Transactional
     public Page<SaleDTO> findAll(Pageable pageable) {
@@ -45,7 +50,8 @@ public class WebSaleServiceImpl implements WebSaleService {
 
     @Override
     @Transactional
-    public SaleDTO replaceSale(Sale newSale, Long id) {
+    public SaleDTO replaceSale(Sale newSale) {
+        long id = newSale.getId();
         Sale sale1 = saleRepository.findById(id)
                 .map(sale -> {
                     sale.setDate(newSale.getDate());

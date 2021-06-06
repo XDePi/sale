@@ -60,12 +60,10 @@ public class SaleRestResource {
     }
 
     @ApiOperation(value = "Update existing Sale entity in DB", notes = "Update existing Sale entity")
-    @PutMapping("/sales/{id}")
+    @PutMapping("/sales")
     public SaleDTO replaceSale(@ApiParam(value = "Sale entity", required = true)
-                        @RequestBody Sale newSale,
-                        @ApiParam(value = "Sale ID which needed to be updated")
-                        @PathVariable Long id) {
-        return webSaleService.replaceSale(newSale, id);
+                        @RequestBody Sale newSale) {
+        return webSaleService.replaceSale(newSale);
     }
 
     @ApiOperation(value = "Delete existing Sale entity from DB", notes = "Delete existing Sale entity")

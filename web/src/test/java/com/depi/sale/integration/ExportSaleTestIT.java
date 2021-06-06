@@ -2,14 +2,16 @@ package com.depi.sale.integration;
 
 import com.depi.sale.SaleApplication;
 import com.depi.sale.entity.Sale;
-import com.poiji.bind.Poiji;
+import feed.excel.ExcelHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -37,10 +39,11 @@ public class ExportSaleTestIT extends BaseIT {
         File file = appExportService.exportMappings();
         assertNotNull(file);
 
-        List<Sale> sale1 = Poiji.fromExcel(file, Sale.class);
+        InputStream inputStream = new FileInputStream(file);
+        List<Sale> sales = ExcelHelper.excelToTutorials(inputStream);
 
-        assertEquals(1, sale1.get(0).getId(), "Id must be 1 because sale entity was saved with the id = 1");
-        assertEquals("DENIS", sale1.get(0).getCustomerName(), "Name must be DENIS because sale entity was saved with this name");
-        assertEquals(BigDecimal.valueOf(1.55).doubleValue(), sale1.get(0).getAmount().doubleValue(), "Amount must be 1.00 because sale entity was saved with this amount");
+        assertEquals(1, sales.get(0).getId(), "Id must be 1 because sale entity was saved with the id = 1");
+        assertEquals("DENIS", sales.get(0).getCustomerName(), "Name must be DENIS because sale entity was saved with this name");
+        assertEquals(BigDecimal.valueOf(1.55).doubleValue(), sales.get(0).getAmount().doubleValue(), "Amount must be 1.00 because sale entity was saved with this amount");
     }
 }
