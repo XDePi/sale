@@ -22,7 +22,7 @@ public class ExportSaleMappingContentResolverImpl implements ExportSaleMappingCo
     public ExcelFeedDescriptor buildDescriptor() {
         ExcelFeedDescriptor result = new ExcelFeedDescriptor();
         result.addColumn(SaleColumnKey.SALE_ID.getName(), ExcelColumnDescriptor.CellType.LONG, true);
-        result.addColumn(SaleColumnKey.DATE.getName(), ExcelColumnDescriptor.CellType.STRING);
+        result.addColumn(SaleColumnKey.DATE.getName(), ExcelColumnDescriptor.CellType.DATE);
         result.addColumn(SaleColumnKey.CUSTOMER_NAME.getName(), ExcelColumnDescriptor.CellType.STRING);
         result.addColumn(SaleColumnKey.AMOUNT.getName(), ExcelColumnDescriptor.CellType.FLOAT2);
         return result;

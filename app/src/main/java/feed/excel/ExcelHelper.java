@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -54,10 +56,12 @@ public class ExcelHelper {
                         case 0:
                             sale.setId((long) currentCell.getNumericCellValue());
                             break;
-
-//                        case 1:
-//                            sale.setDate(((Date) currentCell.getRichStringCellValue()));
-//                            break;
+                        case 1:
+                            String pattern = "yyyy-MM-dd";
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+                            Date  date =simpleDateFormat.parse(currentCell.getStringCellValue());
+                            sale.setDate(date);
+                            break;
 
                         case 2:
                             sale.setCustomerName(currentCell.getStringCellValue());
@@ -82,6 +86,8 @@ public class ExcelHelper {
             return sales;
         } catch (IOException e) {
             throw new RuntimeException("fail to parse Excel file: " + e.getMessage());
+        } catch (ParseException e) {
+            throw new RuntimeException("fail to parse date: " + e.getMessage());
         }
     }
 }

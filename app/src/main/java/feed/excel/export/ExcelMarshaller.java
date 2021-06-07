@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static feed.excel.export.ExcelColumnDescriptor.CellType.FLOAT2;
@@ -229,6 +230,9 @@ public class ExcelMarshaller extends AbstractMarshaller {
     }
 
     private void addCell(Row row, int column, ExcelColumnDescriptor.CellType type, Object value) {
+        String pattern = "yyyy-MM-dd";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
         switch (type) {
             case FLOAT2:
                 if (value instanceof BigDecimal) {
@@ -241,7 +245,8 @@ public class ExcelMarshaller extends AbstractMarshaller {
                 addStringCell(row, column, value);
                 break;
             case DATE:
-                addDateCell(row, column, (Date) value);
+                String valueFormatted = simpleDateFormat.format(value);
+                addStringCell(row, column, valueFormatted);
                 break;
             case INTEGER:
                 addIntegerCell(row, column, (Integer) value);
