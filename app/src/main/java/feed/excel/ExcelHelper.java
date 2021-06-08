@@ -25,7 +25,7 @@ public class ExcelHelper {
     static String[] HEADERS = { "sale_id", "date", "customer_name", "amount" };
     static String SHEET = "Sales";
 
-    public static List<Sale> excelToTutorials(InputStream is) {
+    public static List<Sale> excelToSales(InputStream is) {
         try {
             Workbook workbook = new XSSFWorkbook(is);
 
@@ -56,10 +56,11 @@ public class ExcelHelper {
                         case 0:
                             sale.setId((long) currentCell.getNumericCellValue());
                             break;
+
                         case 1:
                             String pattern = "yyyy-MM-dd";
                             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-                            Date  date =simpleDateFormat.parse(currentCell.getStringCellValue());
+                            Date date = simpleDateFormat.parse(currentCell.getStringCellValue());
                             sale.setDate(date);
                             break;
 

@@ -6,7 +6,6 @@ import com.depi.sale.exceptions.SaleNotFoundException;
 import com.depi.sale.repository.SaleRepository;
 import com.depi.sale.service.WebSaleService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,11 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class WebSaleServiceImpl implements WebSaleService {
 
-    @Autowired
-    ModelMapper modelMapper;
-
-    @Autowired
-    SaleRepository saleRepository;
+    private SaleRepository saleRepository;
+    private ModelMapper modelMapper;
 
     public WebSaleServiceImpl(SaleRepository saleRepository, ModelMapper modelMapper) {
         this.saleRepository = saleRepository;

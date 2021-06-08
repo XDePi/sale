@@ -16,13 +16,13 @@ import java.io.IOException;
 @Service
 public class AppExportServiceImpl implements AppExportService {
 
-    @Autowired
-    SaleRepository saleRepository;
+    private SaleRepository saleRepository;
 
     private final ExportSaleMappingContentResolver saleMappingContentResolver;
 
-    public AppExportServiceImpl(ExportSaleMappingContentResolver saleMappingContentResolver) {
+    public AppExportServiceImpl(ExportSaleMappingContentResolver saleMappingContentResolver, SaleRepository saleRepository) {
         this.saleMappingContentResolver = saleMappingContentResolver;
+        this.saleRepository = saleRepository;
     }
 
     protected AbstractMarshaller getMarshaller() throws IOException {

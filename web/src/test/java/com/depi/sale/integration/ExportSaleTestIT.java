@@ -40,9 +40,10 @@ public class ExportSaleTestIT extends BaseIT {
         assertNotNull(file);
 
         InputStream inputStream = new FileInputStream(file);
-        List<Sale> sales = ExcelHelper.excelToTutorials(inputStream);
+        List<Sale> sales = ExcelHelper.excelToSales(inputStream);
 
         assertEquals(1, sales.get(0).getId(), "Id must be 1 because sale entity was saved with the id = 1");
+        assertEquals(sale.getDate(), sales.get(0).getDate());
         assertEquals("DENIS", sales.get(0).getCustomerName(), "Name must be DENIS because sale entity was saved with this name");
         assertEquals(BigDecimal.valueOf(1.55).doubleValue(), sales.get(0).getAmount().doubleValue(), "Amount must be 1.00 because sale entity was saved with this amount");
     }
