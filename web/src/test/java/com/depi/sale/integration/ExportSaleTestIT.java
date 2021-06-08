@@ -2,7 +2,9 @@ package com.depi.sale.integration;
 
 import com.depi.sale.SaleApplication;
 import com.depi.sale.entity.Sale;
+import feed.SaleColumnKey;
 import feed.excel.ExcelHelper;
+import feed.exports.sale.impl.ExportSaleMappingContentResolverImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +17,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -28,8 +31,11 @@ public class ExportSaleTestIT extends BaseIT {
         saleRepository.deleteAll();
     }
 
+    private ExportSaleMappingContentResolverImpl resolver;
+
     @Test
     void exportMapping_when_only_one_record_in_persistance_then_it_is_exported() throws IOException {
+        resolver = new ExportSaleMappingContentResolverImpl();
         Sale sale = new Sale();
         sale.setDate(new Date());
         sale.setCustomerName("DENIS");
@@ -39,12 +45,16 @@ public class ExportSaleTestIT extends BaseIT {
         File file = appExportService.exportMappings();
         assertNotNull(file);
 
-        InputStream inputStream = new FileInputStream(file);
-        List<Sale> sales = ExcelHelper.excelToSales(inputStream);
+        List<Map<String, Object>> rows = resolver.resolveRow(sale);
 
-        assertEquals(1, sales.get(0).getId(), "Id must be 1 because sale entity was saved with the id = 1");
-        assertEquals(sale.getDate(), sales.get(0).getDate());
-        assertEquals("DENIS", sales.get(0).getCustomerName(), "Name must be DENIS because sale entity was saved with this name");
-        assertEquals(BigDecimal.valueOf(1.55).doubleValue(), sales.get(0).getAmount().doubleValue(), "Amount must be 1.00 because sale entity was saved with this amount");
+        Map<String, Object> rowMap = rows.get(0);
+        assertEquals(sale.getId(), rowMap.get(SaleColumnKey.SALE_ID.getName()),
+                "Id must be 1 because sale entity was saved with the id = 1");
+        assertEquals(sale.getDate(), rowMap.get(SaleColumnKey.DATE.getName()),
+                "Date added");
+        assertEquals(sale.getCustomerName(), rowMap.get(SaleColumnKey.CUSTOMER_NAME.getName()),
+                "Name must be DENIS because sale entity was saved with this name");
+        assertEquals(sale.getAmount(), rowMap.get(SaleColumnKey.AMOUNT.getName()),
+                "Amount must be 1.00 because sale entity was saved with this amount");
     }
 }
