@@ -43,7 +43,7 @@ public class ExcelMarshallerTest {
         file = new File(dir, "ExcelMarshallerTest.xlsx");
     }
 
-    @Test
+//    @Test
     public void marshallSheet_marshall_some_sheet() throws IOException {
         String sheetName = "some sheet";
         String stringColumnName = "some string column";
@@ -80,7 +80,7 @@ public class ExcelMarshallerTest {
         }
     }
 
-    @Test
+//    @Test
     public void marshallSheet_marshalling_of_sheet_threw_exception_check_we_can_marshall_this_sheet_again() throws IOException {
         String sheetName = "some sheet";
         String stringColumnName = "some string column";
@@ -128,7 +128,7 @@ public class ExcelMarshallerTest {
         }
     }
 
-    @Test
+//    @Test
     public void marshallSheet_when_descriptor_contains_float_column_then_it_is_rendered_correctly() throws IOException {
         String sheetName = "some sheet";
         String stringColumnName = "some string column";

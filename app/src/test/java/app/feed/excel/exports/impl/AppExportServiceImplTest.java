@@ -4,12 +4,10 @@ import com.depi.sale.entity.Sale;
 import com.depi.sale.repository.SaleRepository;
 import feed.excel.export.AbstractMarshaller;
 import feed.excel.export.ExcelContentResolver;
-import feed.excel.export.IdentitySaleIterator;
 import feed.exports.AppExportService;
 import feed.exports.impl.AppExportServiceImpl;
 import feed.exports.sale.ExportSaleMappingContentResolver;
 import feed.exports.sale.impl.ExportSaleMappingContentResolverImpl;
-import org.apache.commons.collections4.IteratorUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +21,6 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
