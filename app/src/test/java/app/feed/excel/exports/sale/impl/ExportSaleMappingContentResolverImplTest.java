@@ -43,7 +43,7 @@ public class ExportSaleMappingContentResolverImplTest {
                 Arrays.stream(SaleColumnKey.values()).map(SaleColumnKey::getName)
                         .sorted().collect(Collectors.toList());
 
-        assertEquals(expectedColumnNames, descriptorColumnNames);
+        assertEquals(expectedColumnNames, descriptorColumnNames, "ExpectedColumnNames should be equal to descriptorColumnNames because descriptor works with SaleColumnKey");
     }
 
     @Test

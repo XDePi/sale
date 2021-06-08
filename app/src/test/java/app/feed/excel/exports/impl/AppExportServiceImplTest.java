@@ -46,7 +46,7 @@ public class AppExportServiceImplTest {
     }
 
     @Test
-    void exportMappings_calls_all_export_entity_services() throws IOException {
+    void exportSaleMappingContentResolverImpl_calls_export_entity_service() throws IOException {
         Sale sale = new Sale();
         sale.setId(1L);
         sale.setDate(new Date());
