@@ -1,4 +1,4 @@
-package feed.excel;
+package imports;
 
 import com.depi.sale.entity.Sale;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
@@ -22,8 +22,18 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ExcelHelper {
+    public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     static String[] HEADERS = { "sale_id", "date", "customer_name", "amount" };
     static String SHEET = "Sales";
+
+    public static boolean hasExcelFormat(MultipartFile file) {
+
+        if (!TYPE.equals(file.getContentType())) {
+            return false;
+        }
+
+        return true;
+    }
 
     public static List<Sale> excelToSales(InputStream is) {
         try {

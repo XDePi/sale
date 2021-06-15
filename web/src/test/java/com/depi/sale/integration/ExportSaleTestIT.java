@@ -3,7 +3,6 @@ package com.depi.sale.integration;
 import com.depi.sale.SaleApplication;
 import com.depi.sale.entity.Sale;
 import feed.SaleColumnKey;
-import feed.excel.ExcelHelper;
 import feed.exports.sale.impl.ExportSaleMappingContentResolverImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,9 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
